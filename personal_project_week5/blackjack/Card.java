@@ -49,7 +49,6 @@ public class Card {
 
     private int[] getCardValue(String[] sixDeckCard) {
 
-        //Todo: 이부분 너무 하드코딩 인듯 ㅠㅠ 나중에 다시 생각해보기
         for (int i = 0; i < sixDeckCard.length; i++) {
             switch (sixDeckCard[i]) {
                 case "\u001B[31ma♥\u001B[0m":

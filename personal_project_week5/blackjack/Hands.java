@@ -8,11 +8,11 @@ public class Hands {
     public String firstCard;
     public String secondCard;
 
-    public int firstValue = 0;
-    public int secondValue = 0;
+    public int firstValue;
+    public int secondValue;
     public int totalValue;
 
-    public boolean pOver;
-    public boolean pBlackjack;
-    public boolean pAce;        // 핸드별로 ace 유무 여부
+    public boolean pOver = false;
+    public boolean pBlackjack = false;
+    public boolean pAce = false;        // 핸드별로 ace 유무 여부
 }
