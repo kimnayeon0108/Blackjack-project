@@ -207,6 +207,17 @@ public class Table implements Runnable {
             handsArr[1].secondValue = c.valueArr[5];
             handsArr[2].secondValue = c.valueArr[6];
         }
+
+        sumHandsValue();
+    }
+
+//    private void handsValue2(int numOfHands) {
+//        for(int i = 0; i <numOfHands * 2 + 1; i++){
+//            handsArr
+//        }
+//    }
+
+    private void sumHandsValue(){
         // hands 별 total value 구하기
         for (int i = 0; i < handsArr.length; i++) {
             handsArr[i].totalValue = handsArr[i].firstValue + handsArr[i].secondValue;
@@ -337,7 +348,7 @@ public class Table implements Runnable {
 
         // 딜러 블랙잭
         if (((d.firstValue == 1 && nextCardValue == 10) || (d.firstValue == 10 && nextCardValue == 1))
-                                        && d.dValueArr.size() == 2) {
+                && d.dValueArr.size() == 2) {
 
             d.dBlackjack = true;
             end = true;
@@ -372,7 +383,7 @@ public class Table implements Runnable {
         }
 
         // ace 없는 경우
-        if(!d.dAce) {
+        if (!d.dAce) {
 
             if (d.value + nextCardValue < 17) {
 
@@ -390,7 +401,7 @@ public class Table implements Runnable {
             }
         }
         // bust 인 경우
-        if (d.value> 21) {
+        if (d.value > 21) {
 
             d.dBust = true;
             end = true;
