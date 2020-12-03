@@ -73,25 +73,25 @@
 
 # class 별 역할
 
-###<Dealer>
+### Dealer
 
 - 딜러, 보유금액 1억
 - dValueArr 는 Table 클래스의 dealerGetCard() 메소드에서 딜러가 받은 카드 중 ace 유무를 판별하기 위해서 선언한 변수
 
-### <Player>
+### Player
 - 사용자, 이름 설정 가능, 초기 보유 금액 300만원 부여됨
 - Table에서 보유 금액 칩스로 교환 가능
 
-### <Card>
+### Card
 - Card 클래스의 객체 생성 시 6덱의 카드 생성 및 셔플 진행됨
 - 카드의 숫자 부분과 모양 부분을 배열로 설정하고, getOneDeckCard() 메소드로 한 덱의 카드 생성,
 - suffleCard() 메소드로 6덱의 카드 생성하고, Collections.suffle() 메소드로 셔플 진행
 - getCardValue() 메소드로 셔플된 카드에 맞는 value 배열 생성
 
-### <Hands>
+### Hands
 - 플레이어가 정한 핸드 수 만큼 Hands 객체 생성
 
-### <Table>
+### Table
 - 본격적인 게임 진행
 - Table 의 객체 생성 시 플레이어 입력 받기, 칩스 구매, 카드 객체 생성(6덱의 셔플된 카드 생성됨)
 - startGame() 메소드 이후 부터는 Thread.sleep 기능을 사용하기 위해 run() 메소드 안에서 실행되도록 구현
