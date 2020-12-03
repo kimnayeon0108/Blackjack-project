@@ -311,21 +311,18 @@ public class Table implements Runnable {
 
         // ace 낀 경우
         if (d.dAce) {
-
             if (d.value + nextCardValue + 10 > 21) {
 
                 System.out.printf("\n딜러 카드의 total value: %d", d.value + nextCardValue);
                 d.value += nextCardValue;
 
                 end = false;
-
             } else if (d.value + nextCardValue + 10 >= 17) {
 
                 System.out.printf("\n딜러 카드의 total value: %d", d.value + nextCardValue + 10);
                 d.value = d.value + nextCardValue + 10;
 
                 end = true;
-
             } else {
                 System.out.printf("\n딜러 카드의 total value: %d or %d\n",
                         d.value + nextCardValue, d.value + nextCardValue + 10);
@@ -491,7 +488,9 @@ public class Table implements Runnable {
             d.dValueArr = new ArrayList<>();
             d.dValueArr.add(d.firstValue);
 
-            while (!end || d.value < 17) {
+            while (!end ) {
+
+                if (d.value > 16) break;
 
                 dealerGetCard();
 
