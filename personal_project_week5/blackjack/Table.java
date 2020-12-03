@@ -19,7 +19,7 @@ public class Table implements Runnable {
     private int over = 0;    // 핸드 별로 오버시 1씩 커짐
     private boolean end;
 
-    private ArrayList<String> dividedCard;
+    private int dividedCardNum = numOfHands * 2 + 1;    // 처음에 나눠주는 카드 수
 
     private DecimalFormat formatter = new DecimalFormat("###,###,###");
 
@@ -151,73 +151,39 @@ public class Table implements Runnable {
     private void divideCards(int numOfHands) {
         c = new Card();     // Card 객체 생성과 동시에, 카드 셔플 진행 완료
 
-        // 나눠줄 카드 배열에 담기, hit stay 받으면서 divided 카드 늘어나니깐 arrayList 로
-        dividedCard = new ArrayList<>();
-        for (int i = 0; i < numOfHands * 2 + 1; i++) {
-            dividedCard.add(c.sixDeckCard[i]);
+        // 나눠줄 카드 배열에 담기
+        for (int i = 0; i < numOfHands; i++) {
+            handsArr[i].firstCard = c.sixDeckCard[i];
         }
 
-        switch (numOfHands) {   //Todo: 이부분 잘 생각하면 함수로 반복문으로 만들 수 있을거 같은데.. 고민해보기
-            case 1:
-                handsArr[0].firstCard = this.dividedCard.get(0);
-                d.firstCard = this.dividedCard.get(1);
-                handsArr[0].secondCard = this.dividedCard.get(2);
-                break;
-            case 2:
-                handsArr[0].firstCard = this.dividedCard.get(0);
-                handsArr[1].firstCard = this.dividedCard.get(1);
-                d.firstCard = this.dividedCard.get(2);
-                handsArr[0].secondCard = this.dividedCard.get(3);
-                handsArr[1].secondCard = this.dividedCard.get(4);
-                break;
-            case 3:
-                handsArr[0].firstCard = this.dividedCard.get(0);
-                handsArr[1].firstCard = this.dividedCard.get(1);
-                handsArr[2].firstCard = this.dividedCard.get(2);
-                d.firstCard = this.dividedCard.get(3);
-                handsArr[0].secondCard = this.dividedCard.get(4);
-                handsArr[1].secondCard = this.dividedCard.get(5);
-                handsArr[2].secondCard = this.dividedCard.get(6);
-                break;
+        d.firstCard = c.sixDeckCard[numOfHands];
+
+        for (int j = 0; j < numOfHands; j++) {
+            handsArr[j].secondCard = c.sixDeckCard[numOfHands + 1 + j];
         }
 
-        handsValue(numOfHands);       // 핸드별로 total value 얻기
+        handsValue(numOfHands);
         printDividedCards();
     }
 
     private void handsValue(int numOfHands) {
-        if (numOfHands == 1) {
-            handsArr[0].firstValue = c.valueArr[0];
-            d.firstValue = c.valueArr[1];
-            handsArr[0].secondValue = c.valueArr[2];
+        // 핸드별로 value 얻기
+
+        for (int i = 0; i < numOfHands; i++) {
+            handsArr[i].firstValue = c.valueArr[i];
         }
-        if (numOfHands == 2) {
-            handsArr[0].firstValue = c.valueArr[0];
-            handsArr[1].firstValue = c.valueArr[1];
-            d.firstValue = c.valueArr[2];
-            handsArr[0].secondValue = c.valueArr[3];
-            handsArr[1].secondValue = c.valueArr[4];
-        }
-        if (numOfHands == 3) {
-            handsArr[0].firstValue = c.valueArr[0];
-            handsArr[1].firstValue = c.valueArr[1];
-            handsArr[2].firstValue = c.valueArr[2];
-            d.firstValue = c.valueArr[3];
-            handsArr[0].secondValue = c.valueArr[4];
-            handsArr[1].secondValue = c.valueArr[5];
-            handsArr[2].secondValue = c.valueArr[6];
+
+        d.firstValue = c.valueArr[numOfHands];
+
+        for (int j = 0; j < numOfHands; j++) {
+            handsArr[j].secondValue = c.valueArr[numOfHands + 1 + j];
         }
 
         sumHandsValue();
+
     }
 
-//    private void handsValue2(int numOfHands) {
-//        for(int i = 0; i <numOfHands * 2 + 1; i++){
-//            handsArr
-//        }
-//    }
-
-    private void sumHandsValue(){
+    private void sumHandsValue() {
         // hands 별 total value 구하기
         for (int i = 0; i < handsArr.length; i++) {
             handsArr[i].totalValue = handsArr[i].firstValue + handsArr[i].secondValue;
@@ -294,17 +260,17 @@ public class Table implements Runnable {
         // hit 일 경우
         if (hit) {
             oneMoreCard++;
-            handsArr[i].totalValue += c.valueArr[dividedCard.size() + oneMoreCard];
+            handsArr[i].totalValue += c.valueArr[dividedCardNum + oneMoreCard];
 
             // 핸드별로 받은 카드 중 ace 있고, 11 이하인 경우
-            if ((c.valueArr[dividedCard.size() + oneMoreCard] == 1 || handsArr[i].pAce) && handsArr[i].totalValue < 12) {
+            if ((c.valueArr[dividedCardNum + oneMoreCard] == 1 || handsArr[i].pAce) && handsArr[i].totalValue < 12) {
                 handsArr[i].pAce = true;
 
                 System.out.printf("%s 카드를 받았습니다. total value: %d or %d\n",
-                        c.sixDeckCard[dividedCard.size() + oneMoreCard], handsArr[i].totalValue, handsArr[i].totalValue + 10);
+                        c.sixDeckCard[dividedCardNum + oneMoreCard], handsArr[i].totalValue, handsArr[i].totalValue + 10);
             } else {
                 System.out.printf("%s 카드를 받았습니다. total value: %d\n",
-                        c.sixDeckCard[dividedCard.size() + oneMoreCard], handsArr[i].totalValue);
+                        c.sixDeckCard[dividedCardNum + oneMoreCard], handsArr[i].totalValue);
             }
 
             // Over 21 인 경우
@@ -334,9 +300,10 @@ public class Table implements Runnable {
     }
 
     private void dealerGetCard() {
+
         oneMoreCard++;
-        String nextCard = c.sixDeckCard[dividedCard.size() + oneMoreCard];
-        int nextCardValue = c.valueArr[dividedCard.size() + oneMoreCard];
+        String nextCard = c.sixDeckCard[dividedCardNum + oneMoreCard];
+        int nextCardValue = c.valueArr[dividedCardNum + oneMoreCard];
 
         d.dValueArr.add(nextCardValue);
 
