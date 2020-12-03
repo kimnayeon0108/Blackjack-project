@@ -25,8 +25,10 @@ public class Table implements Runnable {
 
     public Table() {
 
+        // Table 객체 생성시 플레이어 입력받기, 칩스 구매 메소드 실행
         initPlayer();
         buyChips();
+        c = new Card();     // Card 객체 생성과 동시에, 카드 셔플 진행 완료
     }
 
     private void initPlayer() {
@@ -149,8 +151,6 @@ public class Table implements Runnable {
     }
 
     private void divideCards(int numOfHands) {
-        c = new Card();     // Card 객체 생성과 동시에, 카드 셔플 진행 완료
-
         // 나눠줄 카드 배열에 담기
         for (int i = 0; i < numOfHands; i++) {
             handsArr[i].firstCard = c.sixDeckCard[i];
