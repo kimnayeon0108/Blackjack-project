@@ -172,15 +172,12 @@ public class Table implements Runnable {
         for (int i = 0; i < numOfHands; i++) {
             handsArr[i].firstValue = c.valueArr[i];
         }
-
         d.firstValue = c.valueArr[numOfHands];
-
         for (int j = 0; j < numOfHands; j++) {
             handsArr[j].secondValue = c.valueArr[numOfHands + 1 + j];
         }
 
         sumHandsValue();
-
     }
 
     private void sumHandsValue() {
@@ -188,10 +185,6 @@ public class Table implements Runnable {
         for (int i = 0; i < handsArr.length; i++) {
             handsArr[i].totalValue = handsArr[i].firstValue + handsArr[i].secondValue;
 
-            // hands 에 ace 있으면 pAce = true
-            if (handsArr[i].firstValue == 1 || handsArr[i].secondValue == 1) {
-                handsArr[i].pAce = true;
-            }
         }
     }
 
@@ -243,22 +236,15 @@ public class Table implements Runnable {
     }
 
     private void askHisStay(int i) {
+
         int hitOrStay;
-        boolean hit = false;
 
         System.out.println("\n======= " + handsArr[i].handsNum + "번 핸드 value: " + handsArr[i].totalValue +
                 "\thit or stay (숫자를 입력하세요. 1번 : hit, 2번 : stay) =======");
         hitOrStay = s.nextInt();
 
-        if (hitOrStay == 1) {
-            hit = true;
-        }
-        if (hitOrStay == 2) {
-            hit = false;
-        }
-
         // hit 일 경우
-        if (hit) {
+        if (hitOrStay == 1) {
             oneMoreCard++;
             handsArr[i].totalValue += c.valueArr[dividedCardNum + oneMoreCard];
 
@@ -288,7 +274,7 @@ public class Table implements Runnable {
         }
 
         // stay 일 경우
-        if (!hit) {
+        if (hitOrStay == 2) {
             System.out.println("stay");
 
             // ace 포함되어있고, 더한값이 11 이하인 경우
